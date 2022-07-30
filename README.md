@@ -1,12 +1,10 @@
 # max-inventory
 
 An example project Go with clean Architecture
- 
+
 # devops-pipeline-params-pre-example
 
-[![go](https://img.shields.io/badge/gitcrypt-v0.6.X-red.svg)](https://github.com/AGWA/git-crypt)
-[![gpg](https://img.shields.io/badge/gpg-v2.2.X-yellow.svg)](https://gnupg.org/)
-
+![go](https://img.shields.io/badge/GO-V%201.18-blue)
 >A simple Config Params Pipeline example. `:wq`
 >
 >`git-crypt` enables transparent encryption and decryption of files in a git repository. Files which you choose to protect are encrypted when committed, and decrypted when checked out. `git-crypt` lets you freely share a repository containing a mix of public and private content.
