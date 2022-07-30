@@ -1,17 +1,32 @@
 # max-inventory
 
+![go](https://img.shields.io/badge/GO-V%201.18-blue)
+
 An example project Go with clean Architecture
 
-# devops-pipeline-params-pre-example
+## Organize package
 
-![go](https://img.shields.io/badge/GO-V%201.18-blue)
->A simple Config Params Pipeline example. `:wq`
+>In this project the packege settings contains all configuration
 >
->`git-crypt` enables transparent encryption and decryption of files in a git repository. Files which you choose to protect are encrypted when committed, and decrypted when checked out. `git-crypt` lets you freely share a repository containing a mix of public and private content.
+> the package setting  contains the file database configuration and the file setting.yaml
 >
->Developed with all :heart: in the world by ADL DevOps team
+> the package internal  contains subpackages are:
+>
+> - api
+> - service
+> - repository
+>
+>The package api contains the files:
+>
+> - api.go
+>The package service contains the files:
+>
+> - service.go
+>The package repository contains the files:
+>
+> - repository.go
 
-## Table of Content
+### Table of Content
 
 - [Prerequisites](#Prerequisites)
 - [For all collaborators](#For-all-collaborators)
@@ -56,8 +71,8 @@ gpg --gen-key
 
 This will prompt you for your `Name`, `Email` and `Pass-phrase`:
 
-- **Name:** Please use your full name, i.e. *Covid Pepito Perez Rodriguez*
-- **Email:** Will uniquely identify you. Please use your *ADL* email. e.g. *covid.perez@avaldigitallabs.com*
+- **Name:** Please use your full name, i.e. *luis eduardo rosales*
+- **Email:** Will uniquely identify you. Please use your *owner* email. e.g. *ownerz@email.com*
 - **Pass-phrase:** Make sure you enter a strong one. You again need to confirm the pass-phrase
 
 After generating the keys, you can get information about it use `list-keys` command:
@@ -71,11 +86,9 @@ You will get output something like this:
 ```console
 $ gpg --list-keys
 
-/Users/covid.perez/.gnupg/pubring.kbx
-----------------------------------
+/
 pub   rsa2048 2020-07-29 [SC] [expires: 2022-07-29]
       B44DABCCD78435E7F4E9676416DC869402E26669
-uid           [ultimate] Covid Pepito Perez Rodriguez <covid.perez@avaldigitallabs.com>
 sub   rsa2048 2020-07-29 [E] [expires: 2022-07-29]
 ```
 
@@ -86,13 +99,13 @@ You need to get the `Public` key which is a hexadecimal string in the previous c
 Next step is to export your `Public` key to a GPG file. Using the `export` command:
 
 ```bash
-gpg --armor --export --output covid_perez.gpg B44DABCCD78435E7F4E9676416DC869402E26669
+gpg --armor --export --output owner.gpg B44DABCCD78435E7F4E9676416DC869402E26669
 ```
 
-This step will generate a GPG file called name `covid_perez.gpg` in the current directory. This GPG file looks like this:
+This step will generate a GPG file called name `owner.gpg` in the current directory. This GPG file looks like this:
 
 ```console
-$ cat covid_perez.gpg
+$ cat owner.gpg
 
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 
@@ -135,7 +148,7 @@ After this final step, are you ready to share your collaborator `Public` GPG fil
 
 2. Adding collaborators to an encrypted repo is easy, you need to import the collaborator's `Public` key in order to add the key to the "repo" `Keyring` then trust it and finally add the collaborator to the encrypted repo.
 
-3. Don't Forget to add the @devops-security-team (Hackers Team) and Jenkins CI/CD `Public` keys to the "repo" `Keyring` just as another repo collaborator.
+3. Don't Forget to add the @owner (Hackers Team) and Jenkins CI/CD `Public` keys to the "repo" `Keyring` just as another repo collaborator.
 
 4. Finally, You can `git push` the repo and the new encryption will be pushed out.
 
@@ -146,9 +159,9 @@ This will initialise `git-crypt` in the new repository, but *it does not encrypt
 Naturally, you want to do this before you create the sensitive files.
 
 ```console
-$ git clone git@github.avaldigitallabs.com:avaldigitallabs/devops-pipeline-params-pre-example.git
+$ git cloneowner.git
 
-Cloning into 'devops-pipeline-params-pre-example'...
+Cloning into 'max_inventory'...
 remote: Enumerating objects: 120, done.
 remote: Counting objects: 100% (120/120), done.
 remote: Compressing objects: 100% (84/84), done.
@@ -156,7 +169,7 @@ remote: Total 120 (delta 29), reused 103 (delta 23), pack-reused 0
 Receiving objects: 100% (120/120), 40.89 KiB | 307.00 KiB/s, done.
 Resolving deltas: 100% (29/29), done.
 
-$ cd devops-pipeline-params-pre-example
+$ cd max_inventory
 
 $ git-crypt init
 
@@ -170,15 +183,15 @@ This will also generate `.git-crypt` folder in your root repo which will contain
 For this use GPG `import` command:
 
 ```bash
-gpg --import covid_perez.gpg
+gpg --import owner.gpg
 ```
 
 You will get output something like this (Please verify name and ADL email :pray:):
 
 ```console
-$ gpg --import covid_perez.gpg
+$ gpg --import owner.gpg
 
-gpg: key 16DC869402E26669: public key "Covid Pepito Perez Rodriguez <covid.perez@avaldigitallabs.com>" imported
+gpg: key 16DC869402E26669: public key "owner" imported
 gpg: Total number processed: 1
 gpg:               imported: 1
 ```
@@ -194,11 +207,10 @@ You will get output something like this (look the `unknown` trusted level :sweat
 ```console
 $ gpg --list-keys
 
-/Users/andres.amado/.gnupg/pubring.kbx
 ----------------------------------
 pub   rsa2048 2020-07-29 [SC] [expires: 2022-07-29]
       B44DABCCD78435E7F4E9676416DC869402E26669
-uid           [ unknown] Covid Pepito Perez Rodriguez <covid.perez@avaldigitallabs.com>
+uid           [ unknown] owner
 sub   rsa2048 2020-07-29 [E] [expires: 2022-07-29]
 ```
 
@@ -223,10 +235,10 @@ pub  rsa2048/16DC869402E26669
      trust: unknown       validity: unknown
 sub  rsa2048/DC7D99575644AFB6
      created: 2020-07-29  expires: 2022-07-29  usage: E
-[ unknown] (1). Covid Pepito Perez Rodriguez <covid.perez@avaldigitallabs.com>
+[ unknown] (1). owner
 
 gpg> fpr
-pub   rsa2048/16DC869402E26669 2020-07-29 Covid Pepito Perez Rodriguez <covid.perez@avaldigitallabs.com>
+pub   rsa2048/16DC869402E26669 2020-07-29 owner
  Primary key fingerprint: B44D ABCC D784 35E7 F4E9  6764 16DC 8694 02E2 6669
 
 gpg> trust B44D ABCC D784 35E7 F4E9  6764 16DC 8694 02E2 6669
@@ -235,7 +247,7 @@ pub  rsa2048/16DC869402E26669
      trust: unknown       validity: unknown
 sub  rsa2048/DC7D99575644AFB6
      created: 2020-07-29  expires: 2022-07-29  usage: E
-[ unknown] (1). Covid Pepito Perez Rodriguez <covid.perez@avaldigitallabs.com>
+[ unknown] (1). owner
 
 Please decide how far you trust this user to correctly verify other users' keys
 (by looking at passports, checking fingerprints from different sources, etc.)
@@ -255,7 +267,7 @@ pub  rsa2048/16DC869402E26669
      trust: ultimate      validity: unknown
 sub  rsa2048/DC7D99575644AFB6
      created: 2020-07-29  expires: 2022-07-29  usage: E
-[ unknown] (1). Covid Pepito Perez Rodriguez <covid.perez@avaldigitallabs.com>
+[ unknown] (1). owner
 Please note that the shown key validity is not necessarily correct
 unless you restart the program.
 
@@ -286,9 +298,9 @@ $ git log --oneline -n 1
 23963ed (HEAD -> master, origin/master, origin/HEAD) Add 1 git-crypt collaborator
 ```
 
-### 3. Adding Hackers Team & Jenkins CICD to the encrypted repo
+### 3. Adding  encrypted repo
 
-Add the @devops-security-team (Hackers Team) and Jenkins CI/CD `Public` keys to the "repo" `Keyring`  as another repo collaborator. This process is exactly the same previous steps using the GPG files located in the `keys` folder.
+Add the @owner (Hackers Team) and Jenkins CI/CD `Public` keys to the "repo" `Keyring`  as another repo collaborator. This process is exactly the same previous steps using the GPG files located in the `keys` folder.
 
 ```console
 $ tree -L 3
